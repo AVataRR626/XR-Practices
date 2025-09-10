@@ -193,8 +193,8 @@ LineRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Positions:
-  - {x: 0.78, y: 1.411855, z: 1.64}
-  - {x: 0.78, y: 1.411855, z: 0.72999996}
+  - {x: -0.032, y: 1.48644, z: -0.2610538}
+  - {x: -0.032, y: 1.48644, z: -1.1710539}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -541,9 +541,9 @@ MonoBehaviour:
     m_Bits: 1
   environmentLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   rayLength: 100
-  touchDistance: 3
+  touchDistance: 9
   holdingDistance: 0.5
   clickableIndicator: {fileID: 0}
   aimingCrosshair: {fileID: 0}
