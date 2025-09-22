@@ -16,6 +16,7 @@ public class GenUtils : MonoBehaviour
 
     public static void LoadSceneIndex(int index)
     {
+        Debug.Log("LoadScene: " + index);
         SceneManager.LoadScene(index);
     }
 
