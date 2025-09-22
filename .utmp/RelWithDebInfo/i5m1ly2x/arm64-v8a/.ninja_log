@@ -1,10 +1,19 @@
 # ninja log v5
 47	2515	7798786154566464	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	fe029b1c8870e9ea
+75	2791	7798786157469021	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5dfb6bda293993fd
 12	2538	7798786154408432	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	d354c04ad8667eed
+22	2952	7798786159264370	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	c9f541f1b1b717e6
 113	2588	7798786155426606	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	3f07ef25e65d71f6
 35	2608	7798786155527656	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	4e1b2f7b4da4be08
-75	2791	7798786157469021	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5dfb6bda293993fd
-22	2952	7798786159264370	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	c9f541f1b1b717e6
 60	3262	7798786162426745	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	36c148ed1639ed6b
-1	3573	7798786165523760	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	7215497e87be2325
 3573	3839	7798786168332888	C:/Github/XR-Practices/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/i5m1ly2x/obj/arm64-v8a/libgame.so	7d3290ea27af99a6
+1	3573	7798786165523760	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	7215497e87be2325
+75	3311	7802026167857222	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	fe029b1c8870e9ea
+23	3352	7802026168179062	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	d354c04ad8667eed
+55	3353	7802026168224840	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	3f07ef25e65d71f6
+45	3404	7802026168836538	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	4e1b2f7b4da4be08
+85	3464	7802026169260027	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	5dfb6bda293993fd
+31	3563	7802026170417047	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	c9f541f1b1b717e6
+66	3850	7802026173245595	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	36c148ed1639ed6b
+4	4094	7802026175718228	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	7215497e87be2325
+4094	4589	7802026180731420	C:/Github/XR-Practices/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/i5m1ly2x/obj/arm64-v8a/libgame.so	7d3290ea27af99a6
