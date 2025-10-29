@@ -108,7 +108,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_TextWrappingMode: 0
+  m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -243,6 +243,10 @@ MonoBehaviour:
   startDelay: 2
   pulseRepeat: 0
   pulseInterval: 3
+  hoverEnterSound: {fileID: 0}
+  hoverExitSound: {fileID: 0}
+  clickSound: {fileID: 0}
+  audioSource: {fileID: 0}
 --- !u!1 &337436290221651862
 GameObject:
   m_ObjectHideFlags: 0

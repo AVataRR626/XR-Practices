@@ -9,6 +9,7 @@ Can be used for beating hearts, juciness effects for touch, etc.
 
 using UnityEngine;
 using System.Collections;
+using System;
 
 public class ScalePulse : MonoBehaviour
 {
@@ -19,12 +20,21 @@ public class ScalePulse : MonoBehaviour
     public float startDelay = 2;
     public bool pulseRepeat = false;
     public float pulseInterval = 3;
+    //
+    public AudioClip hoverEnterSound;
+    public AudioClip hoverExitSound;
+    public AudioClip clickSound;
+    public AudioSource audioSource;
 
     private Vector3 originalScale;
     private float pulseClock = 0;   
     private bool pulseSwitch = false;
     private float timeLimit;
     private bool resetSwitch = false;
+
+    //
+    public Action OnHover;
+    public Action OnHoverExit;
 
 	// Use this for initialization
 	void Start ()
@@ -81,25 +91,40 @@ public class ScalePulse : MonoBehaviour
             }
         }
     }
-
+    /// <summary>
+    /// HoverEnter
+    /// </summary>
     public void PulseUp()
     {
         //Debug.Log("PulseUp");
         pulseClock = 0;
-        timeLimit = pulseTime/2;
+        timeLimit = pulseTime / 2;
         pulseSwitch = true;
         resetSwitch = true;
-    }
 
+        if (audioSource && hoverEnterSound)
+            audioSource.PlayOneShot(hoverEnterSound);
+        OnHover?.Invoke();
+
+    }
+    /// <summary>
+    /// HoverExit
+    /// </summary>
     public void PulseDown()
     {
         pulseClock = pulseTime / 2;
         timeLimit = pulseTime;
         pulseSwitch = true;
         resetSwitch = false;
+
+        if (audioSource && hoverExitSound)
+            audioSource.PlayOneShot(hoverExitSound);
+        OnHoverExit?.Invoke();
     }
 
-
+    /// <summary>
+    /// MouseDown
+    /// </summary>
     [ContextMenu("Pulse")]
     public void Pulse()
     {
@@ -107,5 +132,7 @@ public class ScalePulse : MonoBehaviour
         timeLimit = pulseTime;
         pulseSwitch = true;
         resetSwitch = false;
+        if (audioSource && clickSound)
+            audioSource.PlayOneShot(clickSound);
     }
 }

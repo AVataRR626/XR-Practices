@@ -140,20 +140,29 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
         if (eventRelay != null)
             eventRelay.onHoverExit.Invoke();
     }
-
+    /// <summary>
+    /// Click
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
         onPrimaryInteract.Invoke();
         Pulse();
     }
-
+    /// <summary>
+    /// HoverEnter
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
     {
         Debug.Log("OnPointerEnter: " + gameObject.name);        
         onHoverEnter.Invoke();
         PulseUp();
     }
-
+    /// <summary>
+    /// HoverExit
+    /// </summary>
+    /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
         Debug.Log("OnPointerExit: " + gameObject.name);
@@ -165,4 +174,5 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     {
         Application.OpenURL(url);
     }
+
 }
