@@ -167,9 +167,16 @@ MonoBehaviour:
   onSecondaryInteract:
     m_PersistentCalls:
       m_Calls: []
+  onPrimaryInteractLift:
+    m_PersistentCalls:
+      m_Calls: []
+  onSecondaryInteractLift:
+    m_PersistentCalls:
+      m_Calls: []
   customTouchDistance: -1
   customHoldDistance: -1
   restrictSecondaryToHeldOnly: 0
+  heldText: 
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
@@ -473,9 +480,16 @@ MonoBehaviour:
   onSecondaryInteract:
     m_PersistentCalls:
       m_Calls: []
+  onPrimaryInteractLift:
+    m_PersistentCalls:
+      m_Calls: []
+  onSecondaryInteractLift:
+    m_PersistentCalls:
+      m_Calls: []
   customTouchDistance: -1
   customHoldDistance: -1
   restrictSecondaryToHeldOnly: 0
+  heldText: 
   onHoverEnter:
     m_PersistentCalls:
       m_Calls: []
