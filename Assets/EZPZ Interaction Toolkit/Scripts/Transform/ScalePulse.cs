@@ -10,6 +10,7 @@ Can be used for beating hearts, juciness effects for touch, etc.
 using UnityEngine;
 using System.Collections;
 using System;
+using UnityEngine.Rendering;
 
 public class ScalePulse : MonoBehaviour
 {
@@ -32,6 +33,9 @@ public class ScalePulse : MonoBehaviour
     private float timeLimit;
     private bool resetSwitch = false;
 
+    //
+    public ButtonType buttonType = ButtonType.Normal;
+    public Volume volume;
     //
     public Action OnHover;
     public Action OnHoverExit;
@@ -102,9 +106,25 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = true;
         resetSwitch = true;
 
-        if (audioSource && hoverEnterSound)
-            audioSource.PlayOneShot(hoverEnterSound);
-        OnHover?.Invoke();
+        //根据不同类型执行逻辑
+        switch (buttonType)
+        {
+            case ButtonType.Normal:
+                break;
+            case ButtonType.Sound:
+                if (audioSource && hoverEnterSound)
+                    audioSource.PlayOneShot(hoverEnterSound);
+                break;
+            case ButtonType.Vision:
+                OnHover?.Invoke();
+                break;
+            case ButtonType.Immersive:
+                if (audioSource && hoverEnterSound)
+                    audioSource.PlayOneShot(hoverEnterSound);
+                volume.gameObject.SetActive(true);
+                break;
+        }
+       
 
     }
     /// <summary>
@@ -112,6 +132,7 @@ public class ScalePulse : MonoBehaviour
     /// </summary>
     public void PulseDown()
     {
+
         pulseClock = pulseTime / 2;
         timeLimit = pulseTime;
         pulseSwitch = true;
@@ -119,6 +140,8 @@ public class ScalePulse : MonoBehaviour
 
         if (audioSource && hoverExitSound)
             audioSource.PlayOneShot(hoverExitSound);
+
+        volume.gameObject.SetActive(false);
         OnHoverExit?.Invoke();
     }
 
@@ -134,5 +157,16 @@ public class ScalePulse : MonoBehaviour
         resetSwitch = false;
         if (audioSource && clickSound)
             audioSource.PlayOneShot(clickSound);
+    }
+
+    /// <summary>
+    /// Button Types Enum
+    /// </summary>
+    public enum ButtonType
+    { 
+        Normal,
+        Sound,
+        Vision,
+        Immersive
     }
 }

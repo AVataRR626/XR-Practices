@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using static ScalePulse;
 
 public class ButtonBounce : MonoBehaviour
 {
@@ -36,7 +37,10 @@ public class ButtonBounce : MonoBehaviour
         StartCoroutine(BounceCoroutine());
     }
 
-
+    /// <summary>
+    /// 弹跳动画 分步执行  （根据动画曲线参数）
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator BounceCoroutine()
     {
         yield return new WaitForNextFrameUnit();
