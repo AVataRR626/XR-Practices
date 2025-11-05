@@ -56,7 +56,9 @@ public class ButtonBounce : MonoBehaviour
             {
                 float t = elapsedTime / duration;
                 float scaleMultiplier = bounceCurve.Evaluate(t);
-                buttonTransform.localScale = originalScale * scaleMultiplier;
+                Vector3 targetScale = originalScale * scaleMultiplier;
+                targetScale.z = defaultScale.z;
+                buttonTransform.localScale = targetScale;
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }

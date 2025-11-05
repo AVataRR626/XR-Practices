@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/__XR_Practices_Assets/Scenes/Involuntary_World_Motion_sideways_fast_high.unity
     guid: 3d5383eb1a176804aa43d68cd73c7585
   m_configObjects:
-    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+    com.unity.input.settings.actions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 6f031a8e3720dee419f27b40c5f00856, type: 2}
     com.unity.xr.management.loader_settings: {fileID: 11400000, guid: c05682805ac7f2f41944c89b59c31bec, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: dfc747cdfa792a64da9a5cf49b3291c8, type: 2}

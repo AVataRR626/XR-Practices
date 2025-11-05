@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 
-public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler //, , , IPointerClickHandler
+public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler  , IPointerClickHandler
 {
     [Header("Interaction Events - On Press")]
     [Tooltip("In desktop mode: this is for when you press your mouse button (not release)")]
@@ -67,7 +67,6 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     public void PulseUp()
     {
         ScalePulse p = GetComponent<ScalePulse>();
-
         if(p != null)
         {
             p.PulseUp();
@@ -88,6 +87,7 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     {
         ScalePulse p = GetComponent<ScalePulse>();
 
+        Debug.Log("Click");
         if (p != null)
         {
             p.Pulse();
@@ -140,6 +140,11 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
         if (eventRelay != null)
             eventRelay.onHoverExit.Invoke();
     }
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        onPrimaryInteract.Invoke();
+        Pulse();
+    }
     /// <summary>
     /// Click
     /// </summary>
@@ -174,5 +179,4 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     {
         Application.OpenURL(url);
     }
-
 }

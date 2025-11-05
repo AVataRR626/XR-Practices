@@ -99,7 +99,7 @@ public class ScalePulse : MonoBehaviour
     /// HoverEnter
     /// </summary>
     public void PulseUp()
-    {
+      {
         //Debug.Log("PulseUp");
         pulseClock = 0;
         timeLimit = pulseTime / 2;
@@ -138,11 +138,23 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = true;
         resetSwitch = false;
 
-        if (audioSource && hoverExitSound)
-            audioSource.PlayOneShot(hoverExitSound);
-
-        volume.gameObject.SetActive(false);
-        OnHoverExit?.Invoke();
+        switch (buttonType)
+        {
+            case ButtonType.Normal:
+                break;
+            case ButtonType.Sound:
+                if (audioSource && hoverExitSound)
+                    audioSource.PlayOneShot(hoverExitSound);
+                break;
+            case ButtonType.Vision:
+                OnHoverExit?.Invoke();
+                break;
+            case ButtonType.Immersive:
+                if (audioSource && hoverEnterSound)
+                    audioSource.PlayOneShot(hoverEnterSound);
+                volume?.gameObject.SetActive(false);
+                break;
+        }
     }
 
     /// <summary>
@@ -155,8 +167,29 @@ public class ScalePulse : MonoBehaviour
         timeLimit = pulseTime;
         pulseSwitch = true;
         resetSwitch = false;
-        if (audioSource && clickSound)
-            audioSource.PlayOneShot(clickSound);
+
+        switch (buttonType)
+        {
+            case ButtonType.Normal:
+                break;
+            case ButtonType.Sound:
+                if (audioSource && clickSound)
+                    audioSource.PlayOneShot(clickSound);
+                break;
+            case ButtonType.Vision:
+                OnHoverExit?.Invoke();
+                break;
+            case ButtonType.Immersive:
+                if (audioSource && hoverEnterSound)
+                    audioSource.PlayOneShot(hoverEnterSound);
+                //volume?.gameObject.SetActive(false);
+                break;
+        }
+    }
+
+    public void SetButtonType(string type)
+    {
+        buttonType = Enum.Parse<ButtonType>(type);
     }
 
     /// <summary>
