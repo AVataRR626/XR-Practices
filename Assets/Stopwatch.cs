@@ -15,6 +15,7 @@ public class Stopwatch : MonoBehaviour
     [Header("Display Parameters")]
     public TextMeshPro textDisplay;
     public TextMeshProUGUI textDisplayUGui;
+    public TextMeshProUGUI textTimer;
     public string format = "N2";
 
     [Header("System Stuff - Usually Don't Touch")]
@@ -67,6 +68,7 @@ public class Stopwatch : MonoBehaviour
     {
         clockRunning = false;
         onPause.Invoke();
+        textTimer.text = textDisplayUGui.text;
     }
 
     public void UnpauseClock()
