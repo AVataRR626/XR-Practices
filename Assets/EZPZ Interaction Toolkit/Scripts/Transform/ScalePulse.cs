@@ -11,6 +11,8 @@ using UnityEngine;
 using System.Collections;
 using System;
 using UnityEngine.Rendering;
+using System.Collections.Generic;
+using TMPro;
 
 public class ScalePulse : MonoBehaviour
 {
@@ -40,8 +42,16 @@ public class ScalePulse : MonoBehaviour
     public Action OnHover;
     public Action OnHoverExit;
 
-	// Use this for initialization
-	void Start ()
+
+    //button switch
+    public bool _switch = false;
+    public List<ButtonType> btnEffects =new List<ButtonType>();
+    public TextMeshProUGUI _SoundTxt;
+    public TextMeshProUGUI _VisionTxt;
+    public TextMeshProUGUI _ImmersiveTxt;
+
+    // Use this for initialization
+    void Start ()
     {
         originalScale = transform.localScale;
 
@@ -63,6 +73,7 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = false;
         resetSwitch = false;
         //timeLimit = 0;
+        SetCurrModeText(ButtonType.Normal);
     }
 
     // Update is called once per frame
@@ -106,26 +117,22 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = true;
         resetSwitch = true;
 
-        //根据不同类型执行逻辑
-        switch (buttonType)
+        // sound effect
+        if (btnEffects.Contains(ButtonType.Sound))
         {
-            case ButtonType.Normal:
-                break;
-            case ButtonType.Sound:
-                if (audioSource && hoverEnterSound)
-                    audioSource.PlayOneShot(hoverEnterSound);
-                break;
-            case ButtonType.Vision:
-                OnHover?.Invoke();
-                break;
-            case ButtonType.Immersive:
-                if (audioSource && hoverEnterSound)
-                    audioSource.PlayOneShot(hoverEnterSound);
-                volume.gameObject.SetActive(true);
-                break;
+            if (audioSource && hoverEnterSound)
+                audioSource.PlayOneShot(hoverEnterSound);
         }
-       
-
+        // vision effect
+        if (btnEffects.Contains(ButtonType.Vision))
+        {
+            OnHover?.Invoke();
+        }
+        // immersive effect
+        if (btnEffects.Contains(ButtonType.Immersive))
+        {
+            volume.gameObject.SetActive(true);
+        }
     }
     /// <summary>
     /// HoverExit
@@ -138,22 +145,21 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = true;
         resetSwitch = false;
 
-        switch (buttonType)
+        // sound effect
+        if (btnEffects.Contains(ButtonType.Sound))
         {
-            case ButtonType.Normal:
-                break;
-            case ButtonType.Sound:
-                if (audioSource && hoverExitSound)
-                    audioSource.PlayOneShot(hoverExitSound);
-                break;
-            case ButtonType.Vision:
-                OnHoverExit?.Invoke();
-                break;
-            case ButtonType.Immersive:
-                if (audioSource && hoverEnterSound)
-                    audioSource.PlayOneShot(hoverEnterSound);
-                volume?.gameObject.SetActive(false);
-                break;
+            if (audioSource && hoverExitSound)
+                audioSource.PlayOneShot(hoverExitSound);
+        }
+        // vision effect
+        if (btnEffects.Contains(ButtonType.Vision))
+        {
+            OnHoverExit?.Invoke();
+        }
+        // immersive effect
+        if (btnEffects.Contains(ButtonType.Immersive))
+        {
+            volume?.gameObject.SetActive(false);
         }
     }
 
@@ -168,28 +174,85 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = true;
         resetSwitch = false;
 
-        switch (buttonType)
+        // sound effect
+        if (btnEffects.Contains(ButtonType.Sound))
         {
-            case ButtonType.Normal:
-                break;
-            case ButtonType.Sound:
-                if (audioSource && clickSound)
-                    audioSource.PlayOneShot(clickSound);
-                break;
-            case ButtonType.Vision:
-                OnHoverExit?.Invoke();
-                break;
-            case ButtonType.Immersive:
-                if (audioSource && hoverEnterSound)
-                    audioSource.PlayOneShot(hoverEnterSound);
-                //volume?.gameObject.SetActive(false);
-                break;
+            if (audioSource && clickSound)
+                audioSource.PlayOneShot(clickSound);
+        }
+        // vision effect
+        if (btnEffects.Contains(ButtonType.Vision))
+        {
+            OnHoverExit?.Invoke();
+        }
+        // immersive effect
+        if (btnEffects.Contains(ButtonType.Immersive))
+        {
+            //volume.gameObject.SetActive(true);
         }
     }
 
+    /// <summary>
+    /// Set Button Type
+    /// </summary>
+    /// <param name="type"></param>
     public void SetButtonType(string type)
     {
-        buttonType = Enum.Parse<ButtonType>(type);
+        Debug.Log("按下");
+        ButtonType target = Enum.Parse<ButtonType>(type);
+        if (target == ButtonType.Normal)
+        {
+            btnEffects.Clear();
+            SetCurrModeText(target);
+            return;
+        }
+        if (btnEffects.Count > 0 && btnEffects.Contains(target))
+        {
+            btnEffects.Remove(target);
+
+            Debug.Log("$移除{target}");
+        }
+        else
+        {
+            btnEffects.Add(target); Debug.Log("$添加{target}");
+        }
+        SetCurrModeText(target);
+    }
+
+    public void SetCurrModeText(ButtonType target)
+    {
+        switch (target)
+        {
+            case ButtonType.Normal:
+                _SoundTxt.text = $"Sound : Deactive";
+                _VisionTxt.text = $"Vision : Deactive";
+                _ImmersiveTxt.text = $"Immersive : Deactive";
+                break;
+            case ButtonType.Sound:
+                if (btnEffects.Contains(target))
+                    _SoundTxt.text = $"Sound : Activate";
+                else
+                    _SoundTxt.text = $"Sound : Deactive";
+                break;
+            case ButtonType.Vision:
+                if (btnEffects.Contains(target))
+                    _VisionTxt.text = $"Vision : Activate";
+                else
+                    _VisionTxt.text = $"Vision : Deactive";
+                break;
+            case ButtonType.Immersive:
+                if (btnEffects.Contains(target))
+                    _ImmersiveTxt.text = $"Immersive : Activate";
+                else
+                    _ImmersiveTxt.text = $"Immersive : Deactive";
+                break;
+        }
+        
+
+    }
+    public void SetButtonStyle()
+    {
+       
     }
 
     /// <summary>

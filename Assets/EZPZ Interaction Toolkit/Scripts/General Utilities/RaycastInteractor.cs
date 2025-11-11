@@ -98,7 +98,7 @@ public class RaycastInteractor : MonoBehaviour
 
     public void CameraCleanup()
     {
-        Debug.Log("Camera Cleanup");
+        //Debug.Log("Camera Cleanup");
 
         if (rayPointer != null)
         {

@@ -87,7 +87,6 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     {
         ScalePulse p = GetComponent<ScalePulse>();
 
-        Debug.Log("Click");
         if (p != null)
         {
             p.Pulse();
@@ -151,7 +150,7 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     /// <param name="eventData"></param>
     public void OnPointerDown(PointerEventData eventData)
     {
-        onPrimaryInteract.Invoke();
+        //onPrimaryInteract.Invoke();
         Pulse();
     }
     /// <summary>
@@ -159,8 +158,7 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     /// </summary>
     /// <param name="eventData"></param>
     public void OnPointerEnter(PointerEventData eventData)
-    {
-        Debug.Log("OnPointerEnter: " + gameObject.name);        
+    {      
         onHoverEnter.Invoke();
         PulseUp();
     }
@@ -170,7 +168,6 @@ public class InteractableGeneral : MonoBehaviour, IPointerDownHandler, IPointerE
     /// <param name="eventData"></param>
     public void OnPointerExit(PointerEventData eventData)
     {
-        Debug.Log("OnPointerExit: " + gameObject.name);
         onHoverExit.Invoke();
         PulseDown();
     }

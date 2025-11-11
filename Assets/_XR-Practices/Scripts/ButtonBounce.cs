@@ -34,7 +34,8 @@ public class ButtonBounce : MonoBehaviour
     private void HandleHover()
     {
         Debug.Log("Hover Enter");
-        StartCoroutine(BounceCoroutine());
+        if(!isBouncing)
+            StartCoroutine(BounceCoroutine());
     }
 
     /// <summary>
