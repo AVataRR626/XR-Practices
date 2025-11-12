@@ -56,6 +56,7 @@ public class ScalePulse : MonoBehaviour
         originalScale = transform.localScale;
 
         Reset();
+        SetCurrModeText(ButtonType.Normal);
     }
 
     void OnEnable()
@@ -73,7 +74,6 @@ public class ScalePulse : MonoBehaviour
         pulseSwitch = false;
         resetSwitch = false;
         //timeLimit = 0;
-        SetCurrModeText(ButtonType.Normal);
     }
 
     // Update is called once per frame
@@ -224,30 +224,38 @@ public class ScalePulse : MonoBehaviour
         switch (target)
         {
             case ButtonType.Normal:
+                if (!_SoundTxt || !_VisionTxt||!_ImmersiveTxt)
+                    break;
                 _SoundTxt.text = $"Sound : Deactive";
                 _VisionTxt.text = $"Vision : Deactive";
                 _ImmersiveTxt.text = $"Immersive : Deactive";
                 break;
             case ButtonType.Sound:
+                if (!_SoundTxt)
+                    break;
                 if (btnEffects.Contains(target))
                     _SoundTxt.text = $"Sound : Activate";
                 else
                     _SoundTxt.text = $"Sound : Deactive";
                 break;
             case ButtonType.Vision:
+                if (!_VisionTxt)
+                    break;
                 if (btnEffects.Contains(target))
                     _VisionTxt.text = $"Vision : Activate";
                 else
                     _VisionTxt.text = $"Vision : Deactive";
                 break;
             case ButtonType.Immersive:
+                if (!_ImmersiveTxt)
+                    break;
                 if (btnEffects.Contains(target))
                     _ImmersiveTxt.text = $"Immersive : Activate";
                 else
                     _ImmersiveTxt.text = $"Immersive : Deactive";
                 break;
         }
-        
+
 
     }
     public void SetButtonStyle()
