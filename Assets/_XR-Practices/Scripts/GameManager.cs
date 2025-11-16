@@ -10,10 +10,10 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public Button[] _MainButton;
+
     public List<ButtonType> btnEffects = new List<ButtonType>();
-    public Text _SoundTxt;
-    public Text _VisionTxt;
-    public Text _ImmersiveTxt;
+    public Text _InfoTxt;
 
     //
     public AnimationCurve bounceCurve;
@@ -26,14 +26,18 @@ public class GameManager : MonoBehaviour
     private bool isBouncing = false;
     private GameObject currButton;
 
+
     private void Start()
     {
         SetCurrModeText(ButtonType.Normal);
     }
+    /// <summary>
+    ///按钮悬停效果
+    /// </summary>
     public void OnButtonHoverEnter()
     {
         // sound effect
-        if (btnEffects.Contains(ButtonType.Sound))
+        if (btnEffects.Contains(ButtonType.Sound))  
         {
             if (audioSource && hoverEnterSound)
                 audioSource.PlayOneShot(hoverEnterSound);
@@ -112,6 +116,22 @@ public class GameManager : MonoBehaviour
         }
         SetCurrModeText(target);
     }
+    /// <summary>
+    /// 设置主按钮颜色
+    /// </summary>
+    /// <param name="button"></param>
+    public void SetColor(Button button)
+    {
+        if (_MainButton == null || _MainButton.Length<1) return;
+        foreach (Button btn in _MainButton)
+        {
+            btn.colors = button.colors;
+        }
+    }
+    public void SetHoverVoice(AudioClip audioClip)
+    {
+        hoverEnterSound = audioClip;
+    }
 
     /// <summary>
     /// 设置按钮类型提示文本
@@ -119,41 +139,26 @@ public class GameManager : MonoBehaviour
     /// <param name="target"></param>
     public void SetCurrModeText(ButtonType target)
     {
+        string msg = "";
         switch (target)
         {
             case ButtonType.Normal:
-                if (!_SoundTxt || !_VisionTxt || !_ImmersiveTxt)
+                if (!_InfoTxt)
                     break;
-                _SoundTxt.text = $"Sound : Deactive";
-                _VisionTxt.text = $"Vision : Deactive";
-                _ImmersiveTxt.text = $"Immersive : Deactive";
+                msg = "Standard button behavior";
                 volume.gameObject.SetActive(false);
                 break;
-            case ButtonType.Sound:
-                if (!_SoundTxt)
-                    break;
-                if (btnEffects.Contains(target))
-                    _SoundTxt.text = $"Sound : Activate";
-                else
-                    _SoundTxt.text = $"Sound : Deactive";
-                break;
-            case ButtonType.Vision:
-                if (!_VisionTxt)
-                    break;
-                if (btnEffects.Contains(target))
-                    _VisionTxt.text = $"Vision : Activate";
-                else
-                    _VisionTxt.text = $"Vision : Deactive";
-                break;
-            case ButtonType.Immersive:
-                if (!_ImmersiveTxt)
-                    break;
-                if (btnEffects.Contains(target))
-                    _ImmersiveTxt.text = $"Immersive : Activate";
-                else
-                    _ImmersiveTxt.text = $"Immersive : Deactive";
+
+            default:
+                if(btnEffects.Contains(ButtonType.Sound))
+                    msg = "Audio feedback enabledc";
+                if(btnEffects.Contains(ButtonType.Vision))
+                    msg += "\nButton flash on hoverc";
+                if(btnEffects.Contains(ButtonType.Immersive))
+                    msg += "\nImmersive mode enabledc";
                 break;
         }
+        _InfoTxt.text = msg;
     }
 
     public void HandleHover(GameObject target)

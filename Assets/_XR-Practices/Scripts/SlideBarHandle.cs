@@ -8,7 +8,9 @@ public class SlideBarHandle : MonoBehaviour
 {
     public SliderType sliderType;
     public Slider slide;
-    public TextMeshProUGUI fontText;
+    //[Range(56, 138)]
+    public Vector2 fontSizeRange;
+    public Text[] fontText;
     public AudioSource audioSource;
 
     private void Awake()
@@ -27,7 +29,7 @@ public class SlideBarHandle : MonoBehaviour
             switch (sliderType)
             {
                 case SliderType.Font:
-                    slide.value = fontText.fontSize * 2;
+                    slide.value = FormatFontSize(fontText[0].fontSize);
                     break;
                 case SliderType.Audio:
                     slide.value = audioSource.volume;
@@ -60,8 +62,36 @@ public class SlideBarHandle : MonoBehaviour
     }
     private void SetFontValue(float Value)
     {
-        if (!fontText) return;
-        fontText.fontSize = Value/2;
+        if (fontText == null || fontText.Length < 1) return;
+        foreach (var text in fontText)
+        {
+            text.fontSize = ReformatFontSize(Value);
+        }
+    }
+
+    /// <summary>
+    /// 格式化字体大小
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    private float FormatFontSize(int size)
+    {
+        float min = (int)fontSizeRange.x;
+        float max = (int)fontSizeRange.y;
+        float curr = size;
+        return (curr - min) / (max - min);
+    }
+    /// <summary>
+    /// 解析字体大小
+    /// </summary>
+    /// <param name="size"></param>
+    /// <returns></returns>
+    private int ReformatFontSize(float size)
+    {
+        float min = (int)fontSizeRange.x;
+        float max = (int)fontSizeRange.y;
+        float curr = size;
+        return (int)(curr * (max - min) + min);
     }
 }
 public enum SliderType
