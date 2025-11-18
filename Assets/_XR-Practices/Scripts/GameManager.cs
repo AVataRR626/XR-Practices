@@ -72,9 +72,12 @@ public class GameManager : MonoBehaviour
         {
             //OnHoverExit?.Invoke();
             //currButton.transform.localScale = new Vector3(1, 1, 1);
-            Animator anim = currButton.GetComponent<Animator>();
-            if (anim != null)
-                PlayerButtonAnimation(anim, false);
+            if (currButton)
+            {
+                Animator anim = currButton.GetComponent<Animator>();
+                if (anim != null)
+                    PlayerButtonAnimation(anim, false);
+            }
             //isBouncing = false;
         }
         // immersive effect
