@@ -16,15 +16,15 @@ public class GameManager : MonoBehaviour
     public Text _InfoTxt;
 
     //
-    public AnimationCurve bounceCurve;
+    //public AnimationCurve bounceCurve;
     public Volume volume;
     public AudioClip hoverEnterSound;
     public AudioClip hoverExitSound;
     public AudioClip clickSound;
     public AudioSource audioSource;
 
-    private bool isBouncing = false;
-    private GameObject currButton;
+    //private bool isBouncing = false;
+    public GameObject currButton;
 
 
     private void Start()
@@ -34,8 +34,10 @@ public class GameManager : MonoBehaviour
     /// <summary>
     ///按钮悬停效果
     /// </summary>
-    public void OnButtonHoverEnter()
+    public void OnButtonHoverEnter(GameObject target)
     {
+        if (currButton == target) return;
+        currButton = target;
         // sound effect
         if (btnEffects.Contains(ButtonType.Sound))  
         {
@@ -45,7 +47,10 @@ public class GameManager : MonoBehaviour
         // vision effect
         if (btnEffects.Contains(ButtonType.Vision))
         {
-            //OnHover?.Invoke();
+            //if (!isBouncing)
+            Animator anim = currButton.GetComponent<Animator>();
+            if (anim != null)
+                PlayerButtonAnimation(anim, true);
         }
         // immersive effect
         if (btnEffects.Contains(ButtonType.Immersive))
@@ -53,8 +58,9 @@ public class GameManager : MonoBehaviour
             volume.gameObject.SetActive(true);
         }
     }
-    public void OnButtonHoverExitr()
+    public void OnButtonHoverExitr(GameObject target)
     {
+      
         // sound effect
         if (btnEffects.Contains(ButtonType.Sound))
         {
@@ -65,11 +71,20 @@ public class GameManager : MonoBehaviour
         if (btnEffects.Contains(ButtonType.Vision))
         {
             //OnHoverExit?.Invoke();
+            //currButton.transform.localScale = new Vector3(1, 1, 1);
+            Animator anim = currButton.GetComponent<Animator>();
+            if (anim != null)
+                PlayerButtonAnimation(anim, false);
+            //isBouncing = false;
         }
         // immersive effect
         if (btnEffects.Contains(ButtonType.Immersive))
         {
             volume?.gameObject.SetActive(false);
+        }
+        if (currButton == target)
+        {
+            currButton = null;
         }
     }
     public void OnButtonClick()
@@ -161,58 +176,62 @@ public class GameManager : MonoBehaviour
         _InfoTxt.text = msg;
     }
 
-    public void HandleHover(GameObject target)
+    //public void HandleHover(GameObject target)
+    //{
+    //    Debug.Log("Hover Enter");
+    //    if (!btnEffects.Contains(ButtonType.Vision)) return;
+    //    if (currButton == target) return;
+    //    currButton = target;
+    //    if (!isBouncing)
+    //        StartCoroutine(BounceCoroutine());
+    //}
+    //public void HandleHoverExit(GameObject target)
+    //{
+    //    Debug.Log("Hover Exit");
+    //    if (currButton == target)
+    //    {
+    //        currButton.transform.localScale = new Vector3(1, 1, 1);
+    //        currButton = null;
+    //    }
+    //    isBouncing = false;
+    //    //buttonTransform.localScale = defaultScale;
+    //}
+    private void PlayerButtonAnimation(Animator animator,bool val)
     {
-        Debug.Log("Hover Enter");
-        if (!btnEffects.Contains(ButtonType.Vision)) return;
-        if (currButton == target) return;
-        currButton = target;
-        if (!isBouncing)
-            StartCoroutine(BounceCoroutine());
-    }
-    public void HandleHoverExit(GameObject target)
-    {
-        Debug.Log("Hover Exit");
-        if (currButton == target)
-        {
-            currButton.transform.localScale = new Vector3(1, 1, 1);
-            currButton = null;
-        }
-        isBouncing = false;
-        //buttonTransform.localScale = defaultScale;
+        animator.SetBool("Hover", val);
     }
     /// <summary>
     /// 弹跳动画 分步执行  （根据动画曲线参数）
     /// </summary>
     /// <returns></returns>
-    private IEnumerator BounceCoroutine()
-    {
-        yield return new WaitForNextFrameUnit();
-        isBouncing = true;
-        Vector3 originalScale = new Vector3(1, 1, 1);
-        while (isBouncing)
-        {
-            float elapsedTime = 0f;
-            float duration = 0.5f; // Duration of the bounce
-            while (elapsedTime < duration && isBouncing)
-            {
-                float t = elapsedTime / duration;
-                float scaleMultiplier = bounceCurve.Evaluate(t);
-                Vector3 targetScale = originalScale * scaleMultiplier;
-                targetScale.z = originalScale.z;
-                if (currButton)
-                    currButton.transform.localScale = targetScale;
-                elapsedTime += Time.deltaTime;
-                yield return null;
-            }
-            if(currButton)
-                currButton.transform.localScale = originalScale;
-            //Wait for a short period before the next bounce
-            if (isBouncing)
-                    yield return new WaitForSeconds(0.5f);
-        }
-        //currButton.transform.localScale = originalScale;
-    }
+    //private IEnumerator BounceCoroutine()
+    //{
+    //    yield return new WaitForNextFrameUnit();
+    //    isBouncing = true;
+    //    Vector3 originalScale = new Vector3(1, 1, 1);
+    //    while (isBouncing)
+    //    {
+    //        float elapsedTime = 0f;
+    //        float duration = 0.5f; // Duration of the bounce
+    //        while (elapsedTime < duration && isBouncing)
+    //        {
+    //            float t = elapsedTime / duration;
+    //            float scaleMultiplier = bounceCurve.Evaluate(t);
+    //            Vector3 targetScale = originalScale * scaleMultiplier;
+    //            targetScale.z = originalScale.z;
+    //            if (currButton)
+    //                currButton.transform.localScale = targetScale;
+    //            elapsedTime += Time.deltaTime;
+    //            yield return null;
+    //        }
+    //        if(currButton)
+    //            currButton.transform.localScale = originalScale;
+    //        //Wait for a short period before the next bounce
+    //        if (isBouncing)
+    //                yield return new WaitForSeconds(0.5f);
+    //    }
+    //    //currButton.transform.localScale = originalScale;
+    //}
 }
 /// <summary>
 /// Button Types Enum
