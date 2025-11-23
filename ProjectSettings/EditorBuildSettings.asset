@@ -5,27 +5,30 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/Cover.unity
     guid: 466aa8bb1f024c5409ff3b6fcae738fd
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/LevelSelector.unity
     guid: 02123e86b5f17414a88d6f7c66180f5d
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/GameLevel/Level1.unity
     guid: b12f89653d1f3194498eee092e709b83
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/GameLevel/Level2.unity
     guid: d00df178ce6051e46aa7f4b4e3a72e49
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/GameLevel/URPLevel/Halloween.unity
     guid: 7cc45b0ecaee46b46bc239e285992f23
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/GameLevel/Christmas.unity
     guid: 66033725910d6dc48a2674802218634f
-  - enabled: 1
+  - enabled: 0
     path: Assets/DeskCat/FindIt/Scenes/GameLevel/3D/3DHouse.unity
     guid: 5f78e7e058bc94f4583d7f5285a24447
+  - enabled: 1
+    path: Assets/__XR_Practices_Assets/Scenes/Good-Yanan Ma 1.unity
+    guid: ea223785c11e4324dbc8a352b3a6dd79
   m_configObjects:
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 6f031a8e3720dee419f27b40c5f00856, type: 2}
     com.unity.xr.openxr.settings4: {fileID: 11400000, guid: dfc747cdfa792a64da9a5cf49b3291c8, type: 2}
