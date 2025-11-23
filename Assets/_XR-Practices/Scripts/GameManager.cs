@@ -178,63 +178,10 @@ public class GameManager : MonoBehaviour
         }
         _InfoTxt.text = msg;
     }
-
-    //public void HandleHover(GameObject target)
-    //{
-    //    Debug.Log("Hover Enter");
-    //    if (!btnEffects.Contains(ButtonType.Vision)) return;
-    //    if (currButton == target) return;
-    //    currButton = target;
-    //    if (!isBouncing)
-    //        StartCoroutine(BounceCoroutine());
-    //}
-    //public void HandleHoverExit(GameObject target)
-    //{
-    //    Debug.Log("Hover Exit");
-    //    if (currButton == target)
-    //    {
-    //        currButton.transform.localScale = new Vector3(1, 1, 1);
-    //        currButton = null;
-    //    }
-    //    isBouncing = false;
-    //    //buttonTransform.localScale = defaultScale;
-    //}
     private void PlayerButtonAnimation(Animator animator,bool val)
     {
         animator.SetBool("Hover", val);
     }
-    /// <summary>
-    /// 弹跳动画 分步执行  （根据动画曲线参数）
-    /// </summary>
-    /// <returns></returns>
-    //private IEnumerator BounceCoroutine()
-    //{
-    //    yield return new WaitForNextFrameUnit();
-    //    isBouncing = true;
-    //    Vector3 originalScale = new Vector3(1, 1, 1);
-    //    while (isBouncing)
-    //    {
-    //        float elapsedTime = 0f;
-    //        float duration = 0.5f; // Duration of the bounce
-    //        while (elapsedTime < duration && isBouncing)
-    //        {
-    //            float t = elapsedTime / duration;
-    //            float scaleMultiplier = bounceCurve.Evaluate(t);
-    //            Vector3 targetScale = originalScale * scaleMultiplier;
-    //            targetScale.z = originalScale.z;
-    //            if (currButton)
-    //                currButton.transform.localScale = targetScale;
-    //            elapsedTime += Time.deltaTime;
-    //            yield return null;
-    //        }
-    //        if(currButton)
-    //            currButton.transform.localScale = originalScale;
-    //        //Wait for a short period before the next bounce
-    //        if (isBouncing)
-    //                yield return new WaitForSeconds(0.5f);
-    //    }
-    //    //currButton.transform.localScale = originalScale;
-    //}
 }
 /// <summary>
 /// Button Types Enum
