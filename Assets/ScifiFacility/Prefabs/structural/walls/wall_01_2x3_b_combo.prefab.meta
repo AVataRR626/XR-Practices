@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 113f42daf602c30418711ce87418dd07
+timeCreated: 1521625327
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/walls/wall_01_2x3_b_combo.prefab
+  uploadId: 716093

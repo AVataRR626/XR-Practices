@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 44ddc58a423bb7c4eb467ff80b3eb6b7
+timeCreated: 1522315163
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/props/keyboard_b.prefab
+  uploadId: 716093

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 2daad5fbd5a70dd469f3d0b2d503a850
+timeCreated: 1516440662
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Animation/door_01_wing_right.anim
+  uploadId: 716093

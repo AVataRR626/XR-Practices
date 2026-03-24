@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4eba44450afd358449c24e855bbd09f1
+timeCreated: 1517458312
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Fabric_03.mat
+  uploadId: 716093

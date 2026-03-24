@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 3117aab4123bff84a86389bf6ce5286e
+timeCreated: 1516723070
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/props/tubes/tube_03.prefab
+  uploadId: 716093

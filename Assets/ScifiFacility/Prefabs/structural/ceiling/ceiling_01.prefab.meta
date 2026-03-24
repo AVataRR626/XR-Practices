@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 7496e07137906bb46ad08f91f0687938
+timeCreated: 1516151261
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/ceiling/ceiling_01.prefab
+  uploadId: 716093

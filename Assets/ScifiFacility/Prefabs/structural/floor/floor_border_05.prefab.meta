@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c604cf39bc71ca34db4cf1c45d54fef4
+timeCreated: 1517215786
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/floor/floor_border_05.prefab
+  uploadId: 716093

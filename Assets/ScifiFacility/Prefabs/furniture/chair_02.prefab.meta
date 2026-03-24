@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 472fbade418f0c441b62ecc8a7f825f6
+timeCreated: 1517984764
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/furniture/chair_02.prefab
+  uploadId: 716093

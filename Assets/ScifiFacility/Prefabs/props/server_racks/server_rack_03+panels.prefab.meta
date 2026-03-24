@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: a6d8016a9902341429df72b55308154c
+timeCreated: 1523605853
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/props/server_racks/server_rack_03+panels.prefab
+  uploadId: 716093

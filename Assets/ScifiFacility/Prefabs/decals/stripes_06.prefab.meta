@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: ec5613f8711301d469beb89059593577
+timeCreated: 1521602593
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/decals/stripes_06.prefab
+  uploadId: 716093

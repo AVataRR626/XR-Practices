@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: c75ef6dba13fa004e8f87434792c514b
+timeCreated: 1518602333
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/trims/trim_05_cap.prefab
+  uploadId: 716093

@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: a1b9bd0aaca814145b9ebbcef4f33a65
+timeCreated: 1512696155
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Base_Metal_Elox_03.mat
+  uploadId: 716093
