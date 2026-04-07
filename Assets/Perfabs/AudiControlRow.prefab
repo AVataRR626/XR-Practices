@@ -194,11 +194,11 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 8320745368849265796}
   m_FillRect: {fileID: 7802874643096320999}
   m_HandleRect: {fileID: 5374510232283506037}
-  m_Direction: 3
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_Direction: 2
+  m_MinValue: -20
+  m_MaxValue: 20
   m_WholeNumbers: 0
-  m_Value: 0.7
+  m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1978,6 +1978,7 @@ GameObject:
   - component: {fileID: 6111065025600193906}
   - component: {fileID: 43865690155803872}
   - component: {fileID: 9013566065337014609}
+  - component: {fileID: 2062133177404676475}
   m_Layer: 5
   m_Name: AudiControlRow
   m_TagString: Untagged
@@ -2053,6 +2054,27 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2062133177404676475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5225125060983404440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f26f305ca891772419636877a1190961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  targetAudioSource: {fileID: 0}
+  mainMixer: {fileID: 24100000, guid: 74b59c3040cba51488471d56ec9fe138, type: 2}
+  playToggle: {fileID: 5004573979735321671}
+  lowSlider: {fileID: 3921332518658795061}
+  midSlider: {fileID: 2561424099433128637}
+  highSlider: {fileID: 8723621620848830360}
+  lowParamName: Audio1_Low
+  midParamName: Audio1_Mid
+  highParamName: Audio1_High
 --- !u!1 &5273662085849755482
 GameObject:
   m_ObjectHideFlags: 0
@@ -2289,7 +2311,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.25, y: 0}
   m_AnchorMax: {x: 0.75, y: 1}
-  m_AnchoredPosition: {x: 0, y: 5}
+  m_AnchoredPosition: {x: 0, y: -5}
   m_SizeDelta: {x: 0, y: -20}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &7023459495132480106
