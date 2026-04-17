@@ -30,9 +30,8 @@ public class DetectionTimeSelectorController : MonoBehaviour
     [SerializeField] private Image screenPanel;
     [SerializeField] private TMP_Text statusText;
 
-    [Header("Error Popup")]
-    [SerializeField] private GameObject errorPopupCanvas;
-    [SerializeField] private TMP_Text popupMessage;
+    [Header("Whiteboard Instructor")]
+    [SerializeField] private TMP_Text instructorMessageText;
 
     [Header("Optional Label Highlights")]
     [SerializeField] private TMP_Text label15s;
@@ -49,18 +48,26 @@ public class DetectionTimeSelectorController : MonoBehaviour
     [SerializeField] private Color completeColor = new Color(0.18f, 0.65f, 0.25f, 0.95f);
     [SerializeField] private Color tooLongColor = new Color(0.78f, 0.20f, 0.20f, 0.95f);
 
-    [Header("Messages")]
+    [Header("Status Messages")]
     [SerializeField] private string standbyMessage = "Device standby.";
     [SerializeField] private string reagentDetectedMessage = "Reagent detected. Select detection time.";
     [SerializeField] private string analyzingMessage = "Analyzing...";
     [SerializeField] private string tooShortMessage = "Detection time too short. Please try again.";
     [SerializeField] private string completeMessage = "Detection complete.";
     [SerializeField] private string tooLongMessage = "Detection time too long. Please try again.";
-    [SerializeField] private string invalidPlacementMessage = "Reagent not detected.\nPlace the reagent on the device.";
+
+    [Header("Instructor Text")]
+    [SerializeField] private string introInstruction = "Step 1: Pick up the beaker and pour the reagent into the device.";
+    [SerializeField] private string invalidPlacementInstruction = "The reagent was not poured into the device. Place the beaker over the opening and try again.";
+    [SerializeField] private string detectedInstruction = "Step 2: Turn the time selector to set the detection time.";
+    [SerializeField] private string analyzingInstruction = "The device is analyzing the sample.";
+    [SerializeField] private string tooShortInstruction = "Warning: The detection time is too short. Increase the duration.";
+    [SerializeField] private string completeInstruction = "Well done. The detection is complete.";
+    [SerializeField] private string tooLongInstruction = "Warning: The detection time is too long. Reduce the duration.";
 
     [Header("Audio")]
     [SerializeField] private AudioSource uiAudioSource;
-    [SerializeField] private AudioClip reagentDetectedClip;
+    [SerializeField] private AudioClip pourClip;
     [SerializeField] private AudioClip analyzingClip;
     [SerializeField] private AudioClip tooShortClip;
     [SerializeField] private AudioClip completeClip;
@@ -83,9 +90,9 @@ public class DetectionTimeSelectorController : MonoBehaviour
     [SerializeField] private float tooLongGap = 0.10f;
 
     private bool reagentPlaced = false;
+    private bool reagentConsumed = false;
     private bool isAnalyzing = false;
     private bool isComplete = false;
-    private bool suppressNextReleasePopup = false;
 
     private int currentStage = 0;
     // 0 = reagent detected, no time selected yet
@@ -113,7 +120,6 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (deviceSocket != null)
         {
             deviceSocket.selectEntered.AddListener(OnSocketEntered);
-            deviceSocket.selectExited.AddListener(OnSocketExited);
         }
 
         if (timeSelectorInteractable != null)
@@ -132,7 +138,6 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (deviceSocket != null)
         {
             deviceSocket.selectEntered.RemoveListener(OnSocketEntered);
-            deviceSocket.selectExited.RemoveListener(OnSocketExited);
         }
 
         if (timeSelectorInteractable != null)
@@ -153,36 +158,14 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (args.interactableObject.transform != reagentBeaker.transform) return;
 
         reagentPlaced = true;
+        reagentConsumed = true;
         isComplete = false;
-        suppressNextReleasePopup = false;
         currentStage = 0;
 
         StopAnalysisIfRunning();
         ResetKnobRotation();
         SetReagentDetectedState();
-        PlayClip(reagentDetectedClip);
-    }
-
-    private void OnSocketExited(SelectExitEventArgs args)
-    {
-        if (args == null || args.interactableObject == null) return;
-        if (reagentBeaker == null) return;
-        if (args.interactableObject.transform != reagentBeaker.transform) return;
-
-        bool wasCompleteBeforeRemoval = isComplete;
-
-        reagentPlaced = false;
-        currentStage = 0;
-        isComplete = false;
-
-        StopAnalysisIfRunning();
-        ResetKnobRotation();
-        SetStandbyState();
-
-        if (wasCompleteBeforeRemoval)
-        {
-            suppressNextReleasePopup = true;
-        }
+        PlayClip(pourClip);
     }
 
     private void OnBeakerReleased(SelectExitEventArgs args)
@@ -203,15 +186,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
     {
         yield return new WaitForSeconds(0.12f);
 
-        if (suppressNextReleasePopup)
+        if (!reagentPlaced && !reagentConsumed)
         {
-            suppressNextReleasePopup = false;
-            yield break;
-        }
-
-        if (!reagentPlaced && !isAnalyzing)
-        {
-            ShowInvalidPlacementError();
+            SetInstructorMessage(invalidPlacementInstruction);
+            PlayClip(invalidPlacementClip);
+            PlaySingleHaptics(invalidPlacementAmplitude, invalidPlacementDuration);
         }
     }
 
@@ -223,14 +202,13 @@ public class DetectionTimeSelectorController : MonoBehaviour
     public void AdvanceTimeSelection()
     {
         if (isAnalyzing)
-        {
-            Debug.Log("Analysis in progress.");
             return;
-        }
 
         if (!reagentPlaced)
         {
-            ShowInvalidPlacementError();
+            SetInstructorMessage(invalidPlacementInstruction);
+            PlayClip(invalidPlacementClip);
+            PlaySingleHaptics(invalidPlacementAmplitude, invalidPlacementDuration);
             return;
         }
 
@@ -246,7 +224,6 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (currentStage == 0)
         {
             SetReagentDetectedState();
-            PlayClip(reagentDetectedClip);
         }
         else
         {
@@ -325,14 +302,14 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
     private void SetStandbyState()
     {
-        if (durationText != null) durationText.text = "00 s";
+        if (durationText != null) durationText.text = "-- s";
         if (deviceStateText != null) deviceStateText.text = "Ready";
 
         if (screenPanel != null) screenPanel.color = standbyColor;
         if (statusText != null) statusText.text = standbyMessage;
 
         UpdateLabelHighlight(0);
-        HideErrorPopup();
+        SetInstructorMessage(introInstruction);
     }
 
     private void SetReagentDetectedState()
@@ -344,7 +321,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (statusText != null) statusText.text = reagentDetectedMessage;
 
         UpdateLabelHighlight(0);
-        HideErrorPopup();
+        SetInstructorMessage(detectedInstruction);
     }
 
     private void ApplyAnalyzingState(int stage)
@@ -368,7 +345,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (statusText != null) statusText.text = analyzingMessage;
 
         UpdateLabelHighlight(stage);
-        HideErrorPopup();
+        SetInstructorMessage(analyzingInstruction);
     }
 
     private void ApplyFinalStageFeedback(int stage)
@@ -380,14 +357,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 1:
                 if (durationText != null) durationText.text = "15 s";
                 if (deviceStateText != null) deviceStateText.text = "Too Short";
-
                 if (screenPanel != null) screenPanel.color = tooShortColor;
                 if (statusText != null) statusText.text = tooShortMessage;
 
                 UpdateLabelHighlight(1);
-                ShowErrorPopup(
-                    "Detection time is too short.\nIncrease the duration and test again."
-                );
+                SetInstructorMessage(tooShortInstruction);
                 PlayClip(tooShortClip);
                 PlayDoubleHaptics(tooShortAmplitude, tooShortPulseDuration, tooShortGap);
                 break;
@@ -397,12 +371,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
                 if (durationText != null) durationText.text = "30 s";
                 if (deviceStateText != null) deviceStateText.text = "Complete";
-
                 if (screenPanel != null) screenPanel.color = completeColor;
                 if (statusText != null) statusText.text = completeMessage;
 
                 UpdateLabelHighlight(2);
-                HideErrorPopup();
+                SetInstructorMessage(completeInstruction);
                 PlayClip(completeClip);
                 PlaySingleHaptics(completeAmplitude, completeDuration);
                 break;
@@ -410,25 +383,23 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 3:
                 if (durationText != null) durationText.text = "45 s";
                 if (deviceStateText != null) deviceStateText.text = "Too Long";
-
                 if (screenPanel != null) screenPanel.color = tooLongColor;
                 if (statusText != null) statusText.text = tooLongMessage;
 
                 UpdateLabelHighlight(3);
-                ShowErrorPopup(
-                    "Detection time is too long.\nReduce the duration and test again."
-                );
+                SetInstructorMessage(tooLongInstruction);
                 PlayClip(tooLongClip);
                 PlayDoubleHaptics(tooLongAmplitude, tooLongPulseDuration, tooLongGap);
                 break;
         }
     }
 
-    private void ShowInvalidPlacementError()
+    private void SetInstructorMessage(string message)
     {
-        ShowErrorPopup(invalidPlacementMessage);
-        PlayClip(invalidPlacementClip);
-        PlaySingleHaptics(invalidPlacementAmplitude, invalidPlacementDuration);
+        if (instructorMessageText != null)
+        {
+            instructorMessageText.text = message;
+        }
     }
 
     private void UpdateLabelHighlight(int stage)
@@ -442,53 +413,18 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 1:
                 if (label15s != null) label15s.color = labelSelectedColor;
                 break;
-
             case 2:
                 if (label30s != null) label30s.color = labelSelectedColor;
                 break;
-
             case 3:
                 if (label45s != null) label45s.color = labelSelectedColor;
                 break;
         }
     }
 
-    private void ShowErrorPopup(string message)
-    {
-        if (errorPopupCanvas != null)
-        {
-            errorPopupCanvas.SetActive(true);
-        }
-
-        if (popupMessage != null)
-        {
-            popupMessage.text = message;
-        }
-    }
-
-    private void HideErrorPopup()
-    {
-        if (errorPopupCanvas != null)
-        {
-            errorPopupCanvas.SetActive(false);
-        }
-    }
-
     private void PlayClip(AudioClip clip)
     {
-        if (uiAudioSource == null)
-        {
-            Debug.LogError("uiAudioSource is null.");
-            return;
-        }
-
-        if (clip == null)
-        {
-            Debug.LogError("AudioClip is null.");
-            return;
-        }
-
-        Debug.Log("Playing clip: " + clip.name);
+        if (uiAudioSource == null || clip == null) return;
         uiAudioSource.PlayOneShot(clip);
     }
 
@@ -534,39 +470,18 @@ public class DetectionTimeSelectorController : MonoBehaviour
         amplitude = Mathf.Clamp01(amplitude);
         duration = Mathf.Max(0f, duration);
 
-        bool leftSent = SendHapticToNode(XRNode.LeftHand, amplitude, duration);
-        bool rightSent = SendHapticToNode(XRNode.RightHand, amplitude, duration);
-
-        if (!leftSent && !rightSent)
-        {
-            Debug.LogWarning("No valid haptic device found on left or right hand.");
-        }
+        SendHapticToNode(XRNode.LeftHand, amplitude, duration);
+        SendHapticToNode(XRNode.RightHand, amplitude, duration);
     }
 
-    private bool SendHapticToNode(XRNode node, float amplitude, float duration)
+    private void SendHapticToNode(XRNode node, float amplitude, float duration)
     {
         InputDevice device = InputDevices.GetDeviceAtXRNode(node);
 
-        if (!device.isValid)
-        {
-            Debug.LogWarning(node + " device is not valid.");
-            return false;
-        }
-
-        if (!device.TryGetHapticCapabilities(out HapticCapabilities capabilities))
-        {
-            Debug.LogWarning(node + " haptic capabilities unavailable.");
-            return false;
-        }
-
-        if (!capabilities.supportsImpulse)
-        {
-            Debug.LogWarning(node + " does not support haptic impulse.");
-            return false;
-        }
+        if (!device.isValid) return;
+        if (!device.TryGetHapticCapabilities(out HapticCapabilities capabilities)) return;
+        if (!capabilities.supportsImpulse) return;
 
         device.SendHapticImpulse(0u, amplitude, duration);
-        Debug.Log("Haptic sent to " + node + " | amp=" + amplitude + " dur=" + duration);
-        return true;
     }
 }

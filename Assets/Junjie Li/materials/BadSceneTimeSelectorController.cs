@@ -24,31 +24,36 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     [SerializeField] private Image screenPanel;
     [SerializeField] private Color screenIdleColor = new Color(0.12f, 0.12f, 0.12f, 0.95f);
 
-    [Header("Warning Light")]
-    [SerializeField] private GameObject warningLight;
-    [SerializeField] private float warningLightOnTime = 1.2f;
+    [Header("Warning Lamp")]
+    [SerializeField] private Renderer lampBulbRenderer;
+    [SerializeField] private Material lampIdleMaterial;
+    [SerializeField] private Material lampAlertMaterial;
+    [SerializeField] private Material lampSuccessMaterial;
+    [SerializeField] private Light lampPointLight;
+    [SerializeField] private float lampFlashDuration = 1.2f;
+    [SerializeField] private float lampFlashInterval = 0.18f;
+    [SerializeField] private float lampSuccessHoldTime = 2f;
+    [SerializeField] private Color lampAlertLightColor = Color.red;
+    [SerializeField] private Color lampSuccessLightColor = Color.green;
 
     [Header("Audio")]
     [SerializeField] private AudioSource uiAudioSource;
-    [SerializeField] private AudioClip reagentDetectedClip;
+    [SerializeField] private AudioClip pourClip;
     [SerializeField] private AudioClip analyzingClip;
     [SerializeField] private AudioClip errorClip;
     [SerializeField] private AudioClip completeClip;
     [SerializeField] private AudioClip invalidPlacementClip;
 
     private bool reagentPlaced = false;
+    private bool reagentConsumed = false;
     private bool isAnalyzing = false;
-    private bool isComplete = false;
 
     private int currentStage = 0;
-    // 0 = no time selected
-    // 1 = 15 s
-    // 2 = 30 s
-    // 3 = 45 s
-
     private Quaternion initialKnobRotation;
     private Coroutine analysisCoroutine;
-    private Coroutine warningLightCoroutine;
+    private Coroutine releaseCheckCoroutine;
+    private Coroutine lampFlashCoroutine;
+    private Coroutine lampSuccessCoroutine;
 
     private void Start()
     {
@@ -65,12 +70,16 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         if (deviceSocket != null)
         {
             deviceSocket.selectEntered.AddListener(OnSocketEntered);
-            deviceSocket.selectExited.AddListener(OnSocketExited);
         }
 
         if (timeSelectorInteractable != null)
         {
             timeSelectorInteractable.selectEntered.AddListener(OnTimeSelectorSelected);
+        }
+
+        if (reagentBeaker != null)
+        {
+            reagentBeaker.selectExited.AddListener(OnBeakerReleased);
         }
     }
 
@@ -79,12 +88,16 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         if (deviceSocket != null)
         {
             deviceSocket.selectEntered.RemoveListener(OnSocketEntered);
-            deviceSocket.selectExited.RemoveListener(OnSocketExited);
         }
 
         if (timeSelectorInteractable != null)
         {
             timeSelectorInteractable.selectEntered.RemoveListener(OnTimeSelectorSelected);
+        }
+
+        if (reagentBeaker != null)
+        {
+            reagentBeaker.selectExited.RemoveListener(OnBeakerReleased);
         }
     }
 
@@ -95,28 +108,39 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         if (args.interactableObject.transform != reagentBeaker.transform) return;
 
         reagentPlaced = true;
-        isComplete = false;
+        reagentConsumed = true;
         currentStage = 0;
 
         StopAnalysisIfRunning();
+        StopLampCoroutines();
         ResetKnobRotation();
         SetIdleVisualState();
-        PlayClip(reagentDetectedClip);
+        SetLampIdle();
+        PlayClip(pourClip);
     }
 
-    private void OnSocketExited(SelectExitEventArgs args)
+    private void OnBeakerReleased(SelectExitEventArgs args)
     {
         if (args == null || args.interactableObject == null) return;
         if (reagentBeaker == null) return;
         if (args.interactableObject.transform != reagentBeaker.transform) return;
 
-        reagentPlaced = false;
-        currentStage = 0;
-        isComplete = false;
+        if (releaseCheckCoroutine != null)
+        {
+            StopCoroutine(releaseCheckCoroutine);
+        }
 
-        StopAnalysisIfRunning();
-        ResetKnobRotation();
-        SetIdleState();
+        releaseCheckCoroutine = StartCoroutine(DelayedReleaseCheck());
+    }
+
+    private IEnumerator DelayedReleaseCheck()
+    {
+        yield return new WaitForSeconds(0.12f);
+
+        if (!reagentPlaced && !reagentConsumed)
+        {
+            TriggerWeakWarning(invalidPlacementClip);
+        }
     }
 
     private void OnTimeSelectorSelected(SelectEnterEventArgs args)
@@ -127,10 +151,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     public void AdvanceTimeSelection()
     {
         if (isAnalyzing)
-        {
-            Debug.Log("Analysis in progress.");
             return;
-        }
 
         if (!reagentPlaced)
         {
@@ -150,6 +171,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         if (currentStage == 0)
         {
             SetIdleVisualState();
+            SetLampIdle();
         }
         else
         {
@@ -168,6 +190,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         isAnalyzing = true;
 
         SetIdleVisualState();
+        SetLampIdle();
         PlayClip(analyzingClip);
 
         yield return new WaitForSeconds(analysisDelay);
@@ -187,6 +210,21 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         }
 
         isAnalyzing = false;
+    }
+
+    private void StopLampCoroutines()
+    {
+        if (lampFlashCoroutine != null)
+        {
+            StopCoroutine(lampFlashCoroutine);
+            lampFlashCoroutine = null;
+        }
+
+        if (lampSuccessCoroutine != null)
+        {
+            StopCoroutine(lampSuccessCoroutine);
+            lampSuccessCoroutine = null;
+        }
     }
 
     private void ResetKnobRotation()
@@ -229,7 +267,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     private void SetIdleState()
     {
         SetIdleVisualState();
-        TurnOffWarningLight();
+        SetLampIdle();
     }
 
     private void SetIdleVisualState()
@@ -242,8 +280,6 @@ public class BadSceneTimeSelectorController : MonoBehaviour
 
     private void ApplyFinalStageFeedback(int stage)
     {
-        isComplete = false;
-
         switch (stage)
         {
             case 1:
@@ -251,8 +287,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
                 break;
 
             case 2:
-                isComplete = true;
-                TurnOffWarningLight();
+                TriggerSuccessLamp();
                 PlayClip(completeClip);
                 break;
 
@@ -265,40 +300,84 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     private void TriggerWeakWarning(AudioClip clip)
     {
         PlayClip(clip);
-        FlashWarningLight();
+        FlashLamp();
     }
 
-    private void FlashWarningLight()
+    private void TriggerSuccessLamp()
     {
-        if (warningLight == null) return;
+        StopLampCoroutines();
+        lampSuccessCoroutine = StartCoroutine(SuccessLampRoutine());
+    }
 
-        if (warningLightCoroutine != null)
+    private void FlashLamp()
+    {
+        StopLampCoroutines();
+        lampFlashCoroutine = StartCoroutine(LampFlashRoutine());
+    }
+
+    private IEnumerator LampFlashRoutine()
+    {
+        float elapsed = 0f;
+        bool isOn = false;
+
+        while (elapsed < lampFlashDuration)
         {
-            StopCoroutine(warningLightCoroutine);
+            isOn = !isOn;
+            SetLampAlertVisual(isOn);
+            yield return new WaitForSeconds(lampFlashInterval);
+            elapsed += lampFlashInterval;
         }
 
-        warningLightCoroutine = StartCoroutine(WarningLightRoutine());
+        SetLampIdle();
+        lampFlashCoroutine = null;
     }
 
-    private IEnumerator WarningLightRoutine()
+    private IEnumerator SuccessLampRoutine()
     {
-        warningLight.SetActive(true);
-        yield return new WaitForSeconds(warningLightOnTime);
-        warningLight.SetActive(false);
-        warningLightCoroutine = null;
+        SetLampSuccessVisual(true);
+        yield return new WaitForSeconds(lampSuccessHoldTime);
+        SetLampIdle();
+        lampSuccessCoroutine = null;
     }
 
-    private void TurnOffWarningLight()
+    private void SetLampAlertVisual(bool alertOn)
     {
-        if (warningLight != null)
+        if (lampBulbRenderer != null)
         {
-            warningLight.SetActive(false);
+            lampBulbRenderer.material = alertOn ? lampAlertMaterial : lampIdleMaterial;
         }
 
-        if (warningLightCoroutine != null)
+        if (lampPointLight != null)
         {
-            StopCoroutine(warningLightCoroutine);
-            warningLightCoroutine = null;
+            lampPointLight.color = lampAlertLightColor;
+            lampPointLight.enabled = alertOn;
+        }
+    }
+
+    private void SetLampSuccessVisual(bool successOn)
+    {
+        if (lampBulbRenderer != null)
+        {
+            lampBulbRenderer.material = successOn ? lampSuccessMaterial : lampIdleMaterial;
+        }
+
+        if (lampPointLight != null)
+        {
+            lampPointLight.color = lampSuccessLightColor;
+            lampPointLight.enabled = successOn;
+        }
+    }
+
+    private void SetLampIdle()
+    {
+        if (lampBulbRenderer != null && lampIdleMaterial != null)
+        {
+            lampBulbRenderer.material = lampIdleMaterial;
+        }
+
+        if (lampPointLight != null)
+        {
+            lampPointLight.enabled = false;
         }
     }
 
