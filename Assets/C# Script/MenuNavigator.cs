@@ -164,7 +164,7 @@ public class MenuNavigator : MonoBehaviour
             panel.transform.rotation = Quaternion.LookRotation(panel.transform.position - headCamera.position);
         }
     }
-}*/
+}
 
 using UnityEngine;
 
@@ -222,6 +222,107 @@ public class MenuNavigator : MonoBehaviour
     {
         mainMenuCanvas.SetActive(false);
         SummonPanelToPlayer(globalAudioPanel);
+    }
+
+    public void QuitMenu() { mainMenuCanvas.SetActive(false); }
+
+    private void SummonPanelToPlayer(GameObject panel)
+    {
+        if (panel != null && headCamera != null)
+        {
+            panel.SetActive(true);
+            Vector3 targetPos = headCamera.position + headCamera.forward * spawnDistance;
+            targetPos.y += heightOffset; 
+            panel.transform.position = targetPos;
+            panel.transform.rotation = Quaternion.LookRotation(panel.transform.position - headCamera.position);
+        }
+    }
+}*/
+
+using UnityEngine;
+
+// 3 Audio settings
+[System.Serializable]
+public class AudioGroupData
+{
+    [Header("3 Audio source")]
+    public AudioSource[] sources = new AudioSource[3];
+    [Header("3 Audio source name")]
+    public string[] trackNames = new string[3] { "Audio 1", "Audio 2", "Audio 3" };
+    [Header("3 Audio source AudioMixer number")]
+    public string[] lowParams = new string[3];
+    public string[] midParams = new string[3];
+    public string[] highParams = new string[3];
+}
+
+public class MenuNavigator : MonoBehaviour
+{
+    [Header("=== Call Broad ===")]
+    public GameObject mainMenuCanvas;
+    public GameObject eqPanelCanvas;
+    public GameObject globalAudioPanel; // ADD Global/ALL 
+    public DynamicEQController eqController; // EQ controller
+
+    // preset 2 groups
+    [Header("=== Preset Groups ===")]
+    public GameObject bgPresetGroup;    // ADD new object (BG)
+    public GameObject alarmPresetGroup; // ADD new object (Alarm)
+
+    [Header("=== Position ===")]
+    public Transform headCamera;
+    public float spawnDistance = 0.7f;
+    public float heightOffset = -0.15f;
+
+    [Header("=== Audio DATA ===")]
+    public AudioGroupData backgroundGroup;
+    public AudioGroupData alarmGroup;
+
+    public void OpenBackgroundPanel()
+    {
+        mainMenuCanvas.SetActive(false);
+
+        //  Background preset，hide Alarm preset
+        if (bgPresetGroup != null) bgPresetGroup.SetActive(true);
+        if (alarmPresetGroup != null) alarmPresetGroup.SetActive(false);
+
+        SummonPanelToPlayer(eqPanelCanvas);
+        // sent Background Audio data to EQ broad
+        if(eqController != null)
+            eqController.SetupPanelGroup(backgroundGroup.sources, backgroundGroup.trackNames, backgroundGroup.lowParams, backgroundGroup.midParams, backgroundGroup.highParams);
+    }
+
+    public void OpenAlarmPanel()
+    {
+        mainMenuCanvas.SetActive(false);
+
+        //  Alarm preset，hide Background preset
+        if (bgPresetGroup != null) bgPresetGroup.SetActive(false);
+        if (alarmPresetGroup != null) alarmPresetGroup.SetActive(true);
+
+        SummonPanelToPlayer(eqPanelCanvas);
+        // sent Alarm Audio data to EQ broad
+        if(eqController != null)
+            eqController.SetupPanelGroup(alarmGroup.sources, alarmGroup.trackNames, alarmGroup.lowParams, alarmGroup.midParams, alarmGroup.highParams);
+    }
+
+    // ADD open Global (ALL) 
+    public void OpenGlobalPanel()
+    {
+        mainMenuCanvas.SetActive(false);
+
+        // hide in broad ALL
+        if (bgPresetGroup != null) bgPresetGroup.SetActive(false);
+        if (alarmPresetGroup != null) alarmPresetGroup.SetActive(false);
+
+        SummonPanelToPlayer(globalAudioPanel);
+    }
+
+    // back UI
+    public void BackToMainMenu()
+    {
+        if (eqPanelCanvas != null) eqPanelCanvas.SetActive(false);
+        if (globalAudioPanel != null) globalAudioPanel.SetActive(false);
+        SummonPanelToPlayer(mainMenuCanvas);
     }
 
     public void QuitMenu() { mainMenuCanvas.SetActive(false); }
