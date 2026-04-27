@@ -15,7 +15,12 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     [Header("Knob Rotation")]
     [SerializeField] private Transform timeSelectorPivot;
     [SerializeField] private Vector3 rotationAxis = new Vector3(0f, 1f, 0f);
-    [SerializeField] private float rotationStep = 90f;
+
+    [Header("Pour Lid")]
+    [SerializeField] private Transform pourLidPivot;
+    [SerializeField] private Vector3 lidClosedLocalEuler = new Vector3(0f, 0f, 0f);
+    [SerializeField] private float lidCloseDelay = 0.08f;
+    [SerializeField] private float lidCloseDuration = 0.35f;
 
     [Header("Timing")]
     [SerializeField] private float analysisDelay = 2f;
@@ -54,6 +59,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
     private Coroutine releaseCheckCoroutine;
     private Coroutine lampFlashCoroutine;
     private Coroutine lampSuccessCoroutine;
+    private Coroutine lidMoveCoroutine;
 
     private void Start()
     {
@@ -117,6 +123,7 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         SetIdleVisualState();
         SetLampIdle();
         PlayClip(pourClip);
+        ClosePourLid();
     }
 
     private void OnBeakerReleased(SelectExitEventArgs args)
@@ -379,6 +386,44 @@ public class BadSceneTimeSelectorController : MonoBehaviour
         {
             lampPointLight.enabled = false;
         }
+    }
+
+    private void ClosePourLid()
+    {
+        if (pourLidPivot == null) return;
+
+        if (lidMoveCoroutine != null)
+        {
+            StopCoroutine(lidMoveCoroutine);
+        }
+
+        lidMoveCoroutine = StartCoroutine(ClosePourLidRoutine());
+    }
+
+    private IEnumerator ClosePourLidRoutine()
+    {
+        if (lidCloseDelay > 0f)
+        {
+            yield return new WaitForSeconds(lidCloseDelay);
+        }
+
+        Quaternion startRotation = pourLidPivot.localRotation;
+        Quaternion targetRotation = Quaternion.Euler(lidClosedLocalEuler);
+
+        float elapsed = 0f;
+
+        while (elapsed < lidCloseDuration)
+        {
+            elapsed += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsed / lidCloseDuration);
+            t = t * t * (3f - 2f * t);
+
+            pourLidPivot.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
+            yield return null;
+        }
+
+        pourLidPivot.localRotation = targetRotation;
+        lidMoveCoroutine = null;
     }
 
     private void PlayClip(AudioClip clip)

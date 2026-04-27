@@ -19,6 +19,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
     [SerializeField] private Vector3 rotationAxis = new Vector3(0f, 1f, 0f);
     [SerializeField] private float rotationStep = 90f;
 
+    [Header("Pour Lid")]
+    [SerializeField] private Transform pourLidPivot;
+    [SerializeField] private Vector3 lidClosedLocalEuler = new Vector3(0f, 0f, 0f);
+    [SerializeField] private float lidCloseDelay = 0.08f;
+    [SerializeField] private float lidCloseDuration = 0.35f;
+
     [Header("Timing")]
     [SerializeField] private float analysisDelay = 2f;
 
@@ -32,6 +38,8 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
     [Header("Whiteboard Instructor")]
     [SerializeField] private TMP_Text instructorMessageText;
+    [SerializeField] private LabInstructorVoiceController instructorVoiceController;
+    [SerializeField] private float instructorVoiceDelayAfterFeedback = 0.45f;
 
     [Header("Optional Label Highlights")]
     [SerializeField] private TMP_Text label15s;
@@ -50,20 +58,20 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
     [Header("Status Messages")]
     [SerializeField] private string standbyMessage = "Device standby.";
-    [SerializeField] private string reagentDetectedMessage = "Reagent detected. Select detection time.";
+    [SerializeField] private string reagentDetectedMessage = "Reagent loaded. Select reaction time.";
     [SerializeField] private string analyzingMessage = "Analyzing...";
-    [SerializeField] private string tooShortMessage = "Detection time too short. Please try again.";
-    [SerializeField] private string completeMessage = "Detection complete.";
-    [SerializeField] private string tooLongMessage = "Detection time too long. Please try again.";
+    [SerializeField] private string tooShortMessage = "Reaction time too short. Please try again.";
+    [SerializeField] private string completeMessage = "Reaction complete.";
+    [SerializeField] private string tooLongMessage = "Reaction time too long. Please try again.";
 
     [Header("Instructor Text")]
     [SerializeField] private string introInstruction = "Step 1: Pick up the beaker and pour the reagent into the device.";
     [SerializeField] private string invalidPlacementInstruction = "The reagent was not poured into the device. Place the beaker over the opening and try again.";
-    [SerializeField] private string detectedInstruction = "Step 2: Turn the time selector to set the detection time.";
+    [SerializeField] private string detectedInstruction = "Step 2: Turn the time selector to set the reaction time.";
     [SerializeField] private string analyzingInstruction = "The device is analyzing the sample.";
-    [SerializeField] private string tooShortInstruction = "Warning: The detection time is too short. Increase the duration.";
-    [SerializeField] private string completeInstruction = "Well done. The detection is complete.";
-    [SerializeField] private string tooLongInstruction = "Warning: The detection time is too long. Reduce the duration.";
+    [SerializeField] private string tooShortInstruction = "Warning: The reaction time is too short. Increase the duration.";
+    [SerializeField] private string completeInstruction = "Well done. The reaction is complete.";
+    [SerializeField] private string tooLongInstruction = "Warning: The reaction time is too long. Reduce the duration.";
 
     [Header("Audio")]
     [SerializeField] private AudioSource uiAudioSource;
@@ -95,7 +103,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
     private bool isComplete = false;
 
     private int currentStage = 0;
-    // 0 = reagent detected, no time selected yet
+    // 0 = reagent loaded, no time selected yet
     // 1 = 15 s
     // 2 = 30 s
     // 3 = 45 s
@@ -104,6 +112,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
     private Coroutine analysisCoroutine;
     private Coroutine releaseCheckCoroutine;
     private Coroutine hapticRoutine;
+    private Coroutine lidMoveCoroutine;
 
     private void Start()
     {
@@ -129,6 +138,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
         if (reagentBeaker != null)
         {
+            reagentBeaker.selectEntered.AddListener(OnBeakerGrabbed);
             reagentBeaker.selectExited.AddListener(OnBeakerReleased);
         }
     }
@@ -147,7 +157,20 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
         if (reagentBeaker != null)
         {
+            reagentBeaker.selectEntered.RemoveListener(OnBeakerGrabbed);
             reagentBeaker.selectExited.RemoveListener(OnBeakerReleased);
+        }
+    }
+
+    private void OnBeakerGrabbed(SelectEnterEventArgs args)
+    {
+        if (args == null || args.interactableObject == null) return;
+        if (reagentBeaker == null) return;
+        if (args.interactableObject.transform != reagentBeaker.transform) return;
+
+        if (instructorVoiceController != null)
+        {
+            instructorVoiceController.PlayPickUpBeakerVoice();
         }
     }
 
@@ -166,6 +189,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
         ResetKnobRotation();
         SetReagentDetectedState();
         PlayClip(pourClip);
+        ClosePourLid();
+
+        if (instructorVoiceController != null)
+        {
+            instructorVoiceController.PlayReagentLoadedVoiceDelayed(instructorVoiceDelayAfterFeedback);
+        }
     }
 
     private void OnBeakerReleased(SelectExitEventArgs args)
@@ -191,6 +220,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
             SetInstructorMessage(invalidPlacementInstruction);
             PlayClip(invalidPlacementClip);
             PlaySingleHaptics(invalidPlacementAmplitude, invalidPlacementDuration);
+
+            if (instructorVoiceController != null)
+            {
+                instructorVoiceController.PlayInvalidPlacementVoiceDelayed(instructorVoiceDelayAfterFeedback);
+            }
         }
     }
 
@@ -209,6 +243,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
             SetInstructorMessage(invalidPlacementInstruction);
             PlayClip(invalidPlacementClip);
             PlaySingleHaptics(invalidPlacementAmplitude, invalidPlacementDuration);
+
+            if (instructorVoiceController != null)
+            {
+                instructorVoiceController.PlayInvalidPlacementVoiceDelayed(instructorVoiceDelayAfterFeedback);
+            }
+
             return;
         }
 
@@ -224,6 +264,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (currentStage == 0)
         {
             SetReagentDetectedState();
+
+            if (instructorVoiceController != null)
+            {
+                instructorVoiceController.PlayReagentLoadedVoiceDelayed(instructorVoiceDelayAfterFeedback);
+            }
         }
         else
         {
@@ -243,6 +288,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
 
         ApplyAnalyzingState(stage);
         PlayClip(analyzingClip);
+
+        if (instructorVoiceController != null)
+        {
+            instructorVoiceController.PlayAnalyzingVoiceDelayed(instructorVoiceDelayAfterFeedback);
+        }
 
         yield return new WaitForSeconds(analysisDelay);
 
@@ -282,12 +332,15 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 0:
                 angle = 0f;
                 break;
+
             case 1:
                 angle = 90f;
                 break;
+
             case 2:
                 angle = 180f;
                 break;
+
             case 3:
                 angle = 270f;
                 break;
@@ -315,7 +368,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
     private void SetReagentDetectedState()
     {
         if (durationText != null) durationText.text = "-- s";
-        if (deviceStateText != null) deviceStateText.text = "Detected";
+        if (deviceStateText != null) deviceStateText.text = "Loaded";
 
         if (screenPanel != null) screenPanel.color = reagentDetectedColor;
         if (statusText != null) statusText.text = reagentDetectedMessage;
@@ -331,9 +384,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 1:
                 if (durationText != null) durationText.text = "15 s";
                 break;
+
             case 2:
                 if (durationText != null) durationText.text = "30 s";
                 break;
+
             case 3:
                 if (durationText != null) durationText.text = "45 s";
                 break;
@@ -364,6 +419,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
                 SetInstructorMessage(tooShortInstruction);
                 PlayClip(tooShortClip);
                 PlayDoubleHaptics(tooShortAmplitude, tooShortPulseDuration, tooShortGap);
+
+                if (instructorVoiceController != null)
+                {
+                    instructorVoiceController.PlayTooShortVoiceDelayed(instructorVoiceDelayAfterFeedback);
+                }
+
                 break;
 
             case 2:
@@ -378,6 +439,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
                 SetInstructorMessage(completeInstruction);
                 PlayClip(completeClip);
                 PlaySingleHaptics(completeAmplitude, completeDuration);
+
+                if (instructorVoiceController != null)
+                {
+                    instructorVoiceController.PlayCompleteVoiceDelayed(instructorVoiceDelayAfterFeedback);
+                }
+
                 break;
 
             case 3:
@@ -390,6 +457,12 @@ public class DetectionTimeSelectorController : MonoBehaviour
                 SetInstructorMessage(tooLongInstruction);
                 PlayClip(tooLongClip);
                 PlayDoubleHaptics(tooLongAmplitude, tooLongPulseDuration, tooLongGap);
+
+                if (instructorVoiceController != null)
+                {
+                    instructorVoiceController.PlayTooLongVoiceDelayed(instructorVoiceDelayAfterFeedback);
+                }
+
                 break;
         }
     }
@@ -413,9 +486,11 @@ public class DetectionTimeSelectorController : MonoBehaviour
             case 1:
                 if (label15s != null) label15s.color = labelSelectedColor;
                 break;
+
             case 2:
                 if (label30s != null) label30s.color = labelSelectedColor;
                 break;
+
             case 3:
                 if (label45s != null) label45s.color = labelSelectedColor;
                 break;
@@ -425,6 +500,7 @@ public class DetectionTimeSelectorController : MonoBehaviour
     private void PlayClip(AudioClip clip)
     {
         if (uiAudioSource == null || clip == null) return;
+
         uiAudioSource.PlayOneShot(clip);
     }
 
@@ -460,8 +536,10 @@ public class DetectionTimeSelectorController : MonoBehaviour
     {
         SendHapticsToBoth(amplitude, pulseDuration);
         yield return new WaitForSeconds(pulseDuration + gap);
+
         SendHapticsToBoth(amplitude, pulseDuration);
         yield return new WaitForSeconds(pulseDuration);
+
         hapticRoutine = null;
     }
 
@@ -483,5 +561,45 @@ public class DetectionTimeSelectorController : MonoBehaviour
         if (!capabilities.supportsImpulse) return;
 
         device.SendHapticImpulse(0u, amplitude, duration);
+    }
+
+    private void ClosePourLid()
+    {
+        if (pourLidPivot == null) return;
+
+        if (lidMoveCoroutine != null)
+        {
+            StopCoroutine(lidMoveCoroutine);
+        }
+
+        lidMoveCoroutine = StartCoroutine(ClosePourLidRoutine());
+    }
+
+    private IEnumerator ClosePourLidRoutine()
+    {
+        if (lidCloseDelay > 0f)
+        {
+            yield return new WaitForSeconds(lidCloseDelay);
+        }
+
+        Quaternion startRotation = pourLidPivot.localRotation;
+        Quaternion targetRotation = Quaternion.Euler(lidClosedLocalEuler);
+
+        float elapsed = 0f;
+
+        while (elapsed < lidCloseDuration)
+        {
+            elapsed += Time.deltaTime;
+
+            float t = Mathf.Clamp01(elapsed / lidCloseDuration);
+            t = t * t * (3f - 2f * t);
+
+            pourLidPivot.localRotation = Quaternion.Slerp(startRotation, targetRotation, t);
+
+            yield return null;
+        }
+
+        pourLidPivot.localRotation = targetRotation;
+        lidMoveCoroutine = null;
     }
 }
