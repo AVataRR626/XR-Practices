@@ -168,11 +168,13 @@ public class AudioVisualizer3D : MonoBehaviour
                     // (i + 1) UIdesign for clear and beautiful
                     float targetHeight = spectrumData[i] * barHeightMultiplier * (i + 1);
                     // use maxBarHeight limit height-> 50f
-                    targetHeight = Mathf.Clamp(targetHeight, 0.02f, maxBarHeight); 
+                    targetHeight = Mathf.Clamp(targetHeight, 0.005f, maxBarHeight); 
 
                     Vector3 newScale = generatedBars[i].localScale;
                     newScale.y = Mathf.Lerp(newScale.y, targetHeight, Time.deltaTime * 15f);
                     generatedBars[i].localScale = newScale;
+
+                    Debug.Log(targetHeight);
 
                     // [NEW] === color change ===
                     if (barRenderers[i] != null)
@@ -189,6 +191,7 @@ public class AudioVisualizer3D : MonoBehaviour
                         barRenderers[i].SetPropertyBlock(propBlock);
                     }
                 }
+                
             }
         }
     }
