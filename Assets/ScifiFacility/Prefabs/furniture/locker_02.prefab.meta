@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: f534f36e19fa927429f6a2b60ffd95a5
+timeCreated: 1518050511
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/furniture/locker_02.prefab
+  uploadId: 716093

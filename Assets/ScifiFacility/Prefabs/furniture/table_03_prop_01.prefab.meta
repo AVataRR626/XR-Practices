@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 56eb42bcf4a1ac6489caafde2cc097d6
+timeCreated: 1522287017
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/furniture/table_03_prop_01.prefab
+  uploadId: 716093

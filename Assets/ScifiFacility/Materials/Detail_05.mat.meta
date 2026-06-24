@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 34c57b6b8c833b84792af08f853c9ba2
+timeCreated: 1513081505
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Detail_05.mat
+  uploadId: 716093

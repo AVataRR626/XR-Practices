@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 8689f9e9862654cad8fdf254b72c3a3e
+timeCreated: 1525004000
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 7400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Animation/WarningLight.anim
+  uploadId: 716093

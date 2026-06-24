@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: f185c01585a9f7a45a15f0263e134d24
+timeCreated: 1512696155
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Base_Color_01.mat
+  uploadId: 716093

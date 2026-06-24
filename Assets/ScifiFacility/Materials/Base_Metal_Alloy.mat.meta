@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 6aeece2f77b771947818e4e34cbcaebe
+timeCreated: 1512696155
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Base_Metal_Alloy.mat
+  uploadId: 716093

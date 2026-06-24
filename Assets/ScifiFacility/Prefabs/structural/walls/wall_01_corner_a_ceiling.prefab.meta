@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 86163ac71893a7346a27ba1a14fda729
+timeCreated: 1516166266
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/walls/wall_01_corner_a_ceiling.prefab
+  uploadId: 716093

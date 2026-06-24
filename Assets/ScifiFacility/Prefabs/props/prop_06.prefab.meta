@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: b02fc17a32914de4b9f5290e607a47c9
+timeCreated: 1518226816
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/props/prop_06.prefab
+  uploadId: 716093

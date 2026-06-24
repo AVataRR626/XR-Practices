@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 93d47bff33dd07d40a5f4b3b37b55351
+timeCreated: 1518076417
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/walls/wall_01_connector_corner.prefab
+  uploadId: 716093

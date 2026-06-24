@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 57d48d97ce7fec34da8a1fcd6fd3002b
+timeCreated: 1512696155
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Base_Rubber.mat
+  uploadId: 716093

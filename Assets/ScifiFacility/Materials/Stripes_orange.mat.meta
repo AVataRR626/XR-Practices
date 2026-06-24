@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 0bb595a22d906f84ea71065187accfec
+timeCreated: 1515380919
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Stripes_orange.mat
+  uploadId: 716093

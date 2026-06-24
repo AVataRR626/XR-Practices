@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 26f7ce52aeb8342438bbd74769452093
+timeCreated: 1524750570
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Materials/Sphere.mat
+  uploadId: 716093

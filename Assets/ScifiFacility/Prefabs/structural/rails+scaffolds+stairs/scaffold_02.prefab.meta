@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 26d64b79149bd884d9f1f1f6862f7aa8
+timeCreated: 1521524629
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/rails+scaffolds+stairs/scaffold_02.prefab
+  uploadId: 716093

@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 60bb2e59e37772543a971df5f1d8c065
+timeCreated: 1521503564
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/structural/walls/wall_04_8x10_c_connector_c.prefab
+  uploadId: 716093

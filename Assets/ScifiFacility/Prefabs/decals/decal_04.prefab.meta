@@ -1,0 +1,17 @@
+fileFormatVersion: 2
+guid: 4fc157f6b09a94649afcc35cf105f067
+timeCreated: 1521780677
+licenseType: Store
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/decals/decal_04.prefab
+  uploadId: 716093

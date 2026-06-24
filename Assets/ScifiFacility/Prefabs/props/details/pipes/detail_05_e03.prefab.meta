@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: ced5d8de0a031424596a61e47ab2b350
+timeCreated: 1514978541
+licenseType: Store
+NativeFormatImporter:
+  mainObjectFileID: 100100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 116916
+  packageName: Sci-Fi Facility
+  packageVersion: 2.1
+  assetPath: Assets/ScifiFacility/Prefabs/props/details/pipes/detail_05_e03.prefab
+  uploadId: 716093
