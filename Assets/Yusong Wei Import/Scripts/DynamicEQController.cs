@@ -5,15 +5,15 @@ using TMPro;
 
 public class DynamicEQController : MonoBehaviour
 {
-    [Header("=== UI 控件绑定 ===")]
+    [Header("=== UI 控件绑定 | UI Contol Binding===")]
     public TextMeshProUGUI currentTrackText; // (Now Editing...)
     public Toggle playToggle;                // select board
     public Slider lowSlider, midSlider, highSlider; // controller Mid，High，Low
 
-    [Header("=== 左侧频道切换按钮 ===")]
+    [Header("=== 左侧频道切换按钮 | Left-side Switching Buttons===")]
     public Button[] trackButtons;            // 3 BUTTON
 
-    [Header("=== 混音器引用 ===")]
+    [Header("=== 混音器引用 | Mixer Reference ===")]
     public AudioMixer mainMixer;
 
     // Audio mixer
