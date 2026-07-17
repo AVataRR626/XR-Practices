@@ -52,8 +52,8 @@ public struct SoundList
     [SerializeField] private string listName;
     [Tooltip("Drop down menu of existing categories of sounds.")] // Drop down uses public enum SoundType at the lines 7-14 of code
     [SerializeField] public SoundType soundTypeSelect;
-    [Tooltip("Attach the audio mixer that controls that type of sound.")]
-    [SerializeField] public AudioMixer audioMixer;
+    [Tooltip("Attach the audio mixer group that controls that type of sound.")]
+    [SerializeField] public AudioMixerGroup audioMixerGroup;
     [Tooltip("Add audio clips here to organise.")]
     [SerializeField] private AudioClip[] sounds;
 }

@@ -106,8 +106,8 @@ public class AudioVisualizer3D : MonoBehaviour
     public Color highColor = Color.red; // the highest color
 
     // data save
-    private float[] audioSamples = new float[256];
-    private float[] spectrumData = new float[64];
+    private float[] audioSamples = new float[1024];
+    private float[] spectrumData = new float[256];
     private Transform[] generatedBars;
 
     // [NEW] change color
@@ -129,6 +129,9 @@ public class AudioVisualizer3D : MonoBehaviour
             {
                 // 
                 GameObject newBar = Instantiate(spectrumBarPrefab, transform);
+
+               
+
                 // -> X line
                 newBar.transform.localPosition = new Vector3(i * spacing, 0, 0);
                 generatedBars[i] = newBar.transform;
