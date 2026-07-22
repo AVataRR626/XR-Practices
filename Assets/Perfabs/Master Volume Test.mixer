@@ -81,7 +81,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Focus Tones
+  m_Name: Music / Tones
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 25aeb62f597d8a54e9d872c5662bb0a5
   m_Children: []
@@ -122,13 +122,34 @@ AudioMixerEffectController:
   m_SendTarget: {fileID: 0}
   m_EnableWetMix: 0
   m_Bypass: 0
+--- !u!243 &-810240007366293571
+AudioMixerGroupController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Voices
+  m_AudioMixer: {fileID: 24100000}
+  m_GroupID: 3dbcc407bdb5d514d8b2e473dd3b77eb
+  m_Children:
+  - {fileID: -6295974167675865849}
+  - {fileID: 6342539455631959383}
+  m_Volume: 6c84735a7299c56448b2920c801c82da
+  m_Pitch: efc008fd986dc02479b9bfa2d07a0a4c
+  m_Send: 00000000000000000000000000000000
+  m_Effects:
+  - {fileID: 1390275694152506677}
+  m_UserColorIndex: 0
+  m_Mute: 0
+  m_Solo: 0
+  m_BypassEffects: 0
 --- !u!243 &-666677269590919187
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Alarm
+  m_Name: Alarms and Effects
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: be5655e9a23906648b895131b0c3a705
   m_Children: []
@@ -167,6 +188,7 @@ AudioMixerController:
     - 4d25133b5ed161346a0b2e6c8c47afea
     - 25aeb62f597d8a54e9d872c5662bb0a5
     - 481b3813e4ec0a74e94a7e13ef6c7c50
+    - 3dbcc407bdb5d514d8b2e473dd3b77eb
     name: View
   m_CurrentViewIndex: 0
   m_TargetSnapshot: {fileID: 24500006}
@@ -180,8 +202,7 @@ AudioMixerGroupController:
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 9a051a4044bdc734db98aed3cff4d88c
   m_Children:
-  - {fileID: 6342539455631959383}
-  - {fileID: -6295974167675865849}
+  - {fileID: -810240007366293571}
   - {fileID: 3217413143857322876}
   - {fileID: -666677269590919187}
   - {fileID: -3777226899374920159}
@@ -217,15 +238,30 @@ AudioMixerSnapshotController:
   m_Name: Snapshot
   m_AudioMixer: {fileID: 24100000}
   m_SnapshotID: 843f203e0fa42554c892a7f95403e047
-  m_FloatValues: {}
+  m_FloatValues:
+    e504dd51f92c8054bb7e442be5104561: -5.995331
   m_TransitionOverrides: {}
+--- !u!244 &1390275694152506677
+AudioMixerEffectController:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_EffectID: e42a833ff67ab22428cf732c0a202504
+  m_EffectName: Attenuation
+  m_MixLevel: 5f98317efb80d884f985799d295591ce
+  m_Parameters: []
+  m_SendTarget: {fileID: 0}
+  m_EnableWetMix: 0
+  m_Bypass: 0
 --- !u!243 &3217413143857322876
 AudioMixerGroupController:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Environmental Sounds
+  m_Name: Environment Sounds
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 481b3813e4ec0a74e94a7e13ef6c7c50
   m_Children: []
@@ -244,7 +280,7 @@ AudioMixerGroupController:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Dialogue
+  m_Name: Foreground Speech
   m_AudioMixer: {fileID: 24100000}
   m_GroupID: 4d25133b5ed161346a0b2e6c8c47afea
   m_Children: []
